@@ -142,9 +142,6 @@ async def main(bot: Client, message: Message):
         elif int(message.chat.id) in Config.BANNED_CHAT_IDS:
             await bot.leave_chat(message.chat.id)
             return
-        else:
-            pass
-
         try:
             forwarded_msg = await message.forward(Config.DB_CHANNEL)
             file_er_id = str(forwarded_msg.message_id)
@@ -253,10 +250,7 @@ async def unban(c: Client, m: Message):
         user_id = int(m.command[1])
         unban_log_text = f"Unbanning user {user_id}"
         try:
-            await c.send_message(
-                user_id,
-                f"Your ban was lifted!"
-            )
+            await c.send_message(user_id, "Your ban was lifted!")
             unban_log_text += '\n\nUser notified successfully!'
         except:
             traceback.print_exc()
@@ -430,7 +424,7 @@ async def button(bot: Client, cmd: CallbackQuery):
         if Config.UPDATES_CHANNEL is None:
             await cmd.answer("Sorry Sir, You didn't Set any Updates Channel!", show_alert=True)
             return
-        if not int(cmd.from_user.id) == Config.BOT_OWNER:
+        if int(cmd.from_user.id) != Config.BOT_OWNER:
             await cmd.answer("You are not allowed to do that!", show_alert=True)
             return
         try:
